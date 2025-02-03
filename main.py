@@ -25,6 +25,8 @@ async def on_ready():
     print(f"Logged in as {bot.user}")
     try:
         guild = discord.Object(id=GUILD_ID)
+        game = discord.Game("with potatoes")
+        await bot.change_presence(status=discord.Status.idle, activity=game)
         synced = await bot.tree.sync(guild=guild)  # Sync commands only for the specified server
         print(f"Synced {len(synced)} commands for guild {GUILD_ID}.")
     except Exception as e:
