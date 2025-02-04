@@ -88,7 +88,9 @@ async def send_car(interaction: discord.Interaction):
                 extension = content_type.split("/")[-1] if "/" in content_type else "jpg"
                 # Create a file object in memory
                 file = discord.File(io.BytesIO(image_data), filename=f"cat.{extension}")
-                await interaction.response.send_message(file=file)
+                await interaction.response.defer()
+                await asyncio.sleep(2)
+                await interaction.followup.send(file=file)
                 log("Sent a random cat picture!")
             else:
                 await interaction.response.send_message("Couldn't fetch a cat image right now, sorry!")
