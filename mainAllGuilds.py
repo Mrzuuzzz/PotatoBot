@@ -8,13 +8,6 @@ intents = discord.Intents.default()
 bot = commands.Bot(command_prefix="!", intents=intents)
 sleepTimer = 10
 
-# the only guild the bot will be used in
-GUILD_ID = 1323428571905003581
-
-# potato bot server 1323428571905003581
-# shell's dnd server 1320557712001728623
-# my testing server 852949595792736266
-
 def log(s: str):
     '''prints a message to the terminal to 'log' it with a timestamp'''
     time = datetime.now().strftime("%Y-%m-%d %H:%M:%S ")
@@ -25,16 +18,16 @@ async def on_ready():
     """what does the bot do when i click run"""
     print(f"Logged in as {bot.user}")
     try:
-        guild = discord.Object(id=GUILD_ID)
-        game = discord.Game("with local potatoes")
+        guild = discord.Object()
+        game = discord.Game("globally")
         await bot.change_presence(status=discord.Status.idle, activity=game)
         synced = await bot.tree.sync(guild=guild)  # Sync commands only for the specified server
-        print(f"Synced {len(synced)} commands for guild {GUILD_ID}.")
+        print(f"Synced {len(synced)} commands globally.")
     except Exception as e:
         print(f"Failed to sync commands: {e}")
 
 # Define the slash command, localized to the specific server
-@bot.tree.command(name="send_gif", description="Send a GIF with your custom message", guild=discord.Object(id=GUILD_ID))
+@bot.tree.command(name="send_gif", description="Send a GIF with your custom message", guild=discord.Object())
 async def send_gif(interaction: discord.Interaction, message: str):
     """Slash command to send a FIRE gif with a custom message."""
     
@@ -75,7 +68,7 @@ async def send_gif(interaction: discord.Interaction, message: str):
         await interaction.response.send_message("Something went wrong!", ephemeral=True)
         log(f"Error sending fire gif: {e}")
 
-@bot.tree.command(name="send_car", description="Get an image of a random ~~kitty~~ car", guild=discord.Object(id=GUILD_ID))
+@bot.tree.command(name="send_car", description="Get an image of a random ~~kitty~~ car", guild=discord.Object())
 async def send_car(interaction: discord.Interaction):
     """Sends a random cat picture from https://genrandom.com/cats/"""
     url = "https://genrandom.com/api/cat"
@@ -98,7 +91,7 @@ async def send_car(interaction: discord.Interaction):
                 log("Couldn't send a random cat picture")
 
 """ BELOW IS WORK IN PROGRESS """
-# @bot.tree.command(name="jarvis", description="send that one jarvis meme with a custom msg, max 80 characters", guild=discord.Object(id=GUILD_ID))
+# @bot.tree.command(name="jarvis", description="send that one jarvis meme with a custom msg, max 80 characters", guild=discord.Object())
 # async def send_gif(interaction: discord.Interaction, message: str):
 #     await interaction.response.send_message("oopsies, this command is under construction, sorgy")
 #     #1 find out if the user actually inputted less than 90 characters
@@ -112,11 +105,11 @@ async def send_car(interaction: discord.Interaction):
 #     layer = ImageDraw.Draw(img)
 #     font = ImageFont.truetype()
 
-@bot.tree.command(name="ping", description="returns the ping between you and the server", guild=discord.Object(id=GUILD_ID))
+@bot.tree.command(name="ping", description="returns the ping between you and the server", guild=discord.Object())
 async def ping(interaction: discord.Interaction):
     await interaction.response.send_message(f"pong! 🏓, ping is: {bot.latency*1000:.2f} milliseconds!")
     
-@bot.tree.command(name="potato", description="potato", guild=discord.Object(id=GUILD_ID))
+@bot.tree.command(name="potato", description="potato", guild=discord.Object())
 async def potato(interaction: discord.Interaction):
     await interaction.response.send_message("potato 🥔")
 
@@ -132,12 +125,12 @@ async def potato(interaction: discord.Interaction):
 #     async def menu1(self, button: discord.ui.Button, interaction: discord.Interaction):
         
 
-# @bot.tree.command(name="rps", description="play rock paper scissors against the bot!", guild=discord.Object(id=GUILD_ID))
+# @bot.tree.command(name="rps", description="play rock paper scissors against the bot!", guild=discord.Object())
 # async def rps(interaction: discord.Interaction):
 #     botPick = random.choice([1,2,3])
 #     await interaction.response.send_message("Take your pick! I've already picked mine")
     
-@bot.tree.command(name="potato_pic", description="get a random potato picture :o", guild=discord.Object(id=GUILD_ID))
+@bot.tree.command(name="potato_pic", description="get a random potato picture :o", guild=discord.Object())
 async def potato_pic(interaction: discord.Interaction):
     
     listPotato = [ # a buttload of potato pictures
@@ -184,7 +177,7 @@ async def potato_pic(interaction: discord.Interaction):
                 await interaction.response.send_message("Couldn't fetch a potato image right now, sorry!")
                 log("Couldn't send a random potato picture")
 
-# @bot.tree.command(name="speak", description="speak", guild=discord.Object(id=GUILD_ID))
+# @bot.tree.command(name="speak", description="speak", guild=discord.Object())
 # async def speak(interaction: discord.Interaction, message: str):
 #     """speaks"""
 #     await interaction.response.send_message(message)
