@@ -33,11 +33,11 @@ async def brialynmom(interaction: discord.Integration):
     """Adds one to the number of times we've fucked brailyns mom"""
     
     counter = 0
-    with open("brailynmomcounter.txt", 'wb') as file:
-        counter = file.readline()
+    with open("brailynmomcounter.txt", 'r') as file:
+        counter = int(file.read())
         counter+=1
     with open("brailynmomcounter.txt", 'w') as file:
-        file.write(counter)
+        file.write(str(counter))
     await interaction.response.send_message(f"You fucked brailyn's mother! \nTotal number of times she's been fucked = {counter}")
 
 # Define the slash command, localized to the specific server
