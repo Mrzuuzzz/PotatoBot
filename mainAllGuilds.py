@@ -1,4 +1,4 @@
-import discord, requests, aiohttp, io, random, asyncio
+import discord, requests, aiohttp, io, random, asyncio, json
 from discord.ext import commands
 from discord import app_commands
 # from PIL import Image, ImageDraw, ImageFont
@@ -32,13 +32,32 @@ async def on_ready():
 async def brialynmom(interaction: discord.Integration):
     """Adds one to the number of times we've fucked brailyns mom"""
     
-    counter = 0
-    with open("brailynmomcounter.txt", 'r') as file:
-        counter = int(file.read())
-        counter+=1
-    with open("brailynmomcounter.txt", 'w') as file:
-        file.write(str(counter))
-    await interaction.response.send_message(f"You fucked brailyn's mother! \nTotal number of times she's been fucked = {counter}")
+    userid = interaction.user.id
+
+    log(f"{userid} ran brailynmomcounter")
+    
+    
+    with open("brailynmom.json", 'r+') as file:
+        j = json.load(file)
+        
+        # adds one more to tally
+        counter = j["counter"] + 1
+        j["counter"] = counter
+        
+        # increment leaderboard for the user
+        if str(userid) in j["leaderboard"]:
+            j["leaderboard"][str(userid)] += 1
+        else:
+            j["leaderboard"][str(userid)] = 1
+        
+        # write back to the file
+        file.seek(0)
+        json.dump(j, file, indent=4)
+        file.truncate()
+        
+    await interaction.response.send_message(f"You did brailyn's mother!"
+                                            f"\nTotal = **{counter}**"
+                                            f"\nYou = **{j['leaderboard'][str(userid)]}**")
 
 # Define the slash command, localized to the specific server
 @bot.tree.command(name="fire", description="Send a FIRE GIF with your custom message")
