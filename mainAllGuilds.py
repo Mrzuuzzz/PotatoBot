@@ -7,7 +7,7 @@ from datetime import datetime
 """--- SETTING UP ---"""
 intents = discord.Intents.default()
 bot = commands.Bot(command_prefix="!", intents=intents)
-sleepTimer = 5
+sleepTimer = 3
 
 def log(s: str):
     '''prints a message to the terminal to 'log' it with a timestamp'''
@@ -27,7 +27,7 @@ async def on_ready():
         print(f"Failed to sync commands: {e}")
 
 # Define the slash command, localized to the specific server
-@bot.tree.command(name="fire", description="Send a GIF with your custom message")
+@bot.tree.command(name="fire", description="Send a FIRE GIF with your custom message")
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 @app_commands.user_install()
 async def fire(interaction: discord.Interaction, message: str):
