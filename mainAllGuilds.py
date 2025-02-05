@@ -94,21 +94,6 @@ async def send_car(interaction: discord.Interaction):
                 await interaction.response.send_message("Couldn't fetch a cat image right now, sorry!")
                 log("Couldn't send a random cat picture")
 
-""" BELOW IS WORK IN PROGRESS """
-# @bot.tree.command(name="jarvis", description="send that one jarvis meme with a custom msg, max 80 characters")
-# async def send_gif(interaction: discord.Interaction, message: str):
-#     await interaction.response.send_message("oopsies, this command is under construction, sorgy")
-#     #1 find out if the user actually inputted less than 90 characters
-    
-#     #0 Find out how big it should be and how many lines
-#     minFontSize = 35
-#     maxFontSize = 55
-    
-#     #1 actually place the image
-#     img = Image.open('jarvis.png)')
-#     layer = ImageDraw.Draw(img)
-#     font = ImageFont.truetype()
-
 @bot.tree.command(name="ping", description="returns the ping between you and the server")
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 @app_commands.user_install()
@@ -120,23 +105,6 @@ async def ping(interaction: discord.Interaction):
 @app_commands.user_install()
 async def potato(interaction: discord.Interaction):
     await interaction.response.send_message("potato 🥔")
-
-# class RockPaperScissors(discord.ui.View):
-#     def __init__(self):
-#         super().__init__()
-#         self.value = None
-    
-#     def evaluatePick(userPick):
-#         return
-        
-#     @discord.ui.button(label="🪨", style=discord.ButtonStyle.grey)
-#     async def menu1(self, button: discord.ui.Button, interaction: discord.Interaction):
-        
-
-# @bot.tree.command(name="rps", description="play rock paper scissors against the bot!")
-# async def rps(interaction: discord.Interaction):
-#     botPick = random.choice([1,2,3])
-#     await interaction.response.send_message("Take your pick! I've already picked mine")
     
 @bot.tree.command(name="potato_pic", description="get a random potato picture :o")
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
@@ -186,6 +154,38 @@ async def potato_pic(interaction: discord.Interaction):
             else:
                 await interaction.response.send_message("Couldn't fetch a potato image right now, sorry!")
                 log("Couldn't send a random potato picture")
+
+""" BELOW IS WORK IN PROGRESS """
+# @bot.tree.command(name="jarvis", description="send that one jarvis meme with a custom msg, max 80 characters")
+# async def send_gif(interaction: discord.Interaction, message: str):
+#     await interaction.response.send_message("oopsies, this command is under construction, sorgy")
+#     #1 find out if the user actually inputted less than 90 characters
+#   
+#     #0 Find out how big it should be and how many lines
+#     minFontSize = 35
+#     maxFontSize = 55
+#
+#     #1 actually place the image
+#     img = Image.open('jarvis.png)')
+#     layer = ImageDraw.Draw(img)
+#     font = ImageFont.truetype()
+
+# class RockPaperScissors(discord.ui.View):
+#     def __init__(self):
+#         super().__init__()
+#         self.value = None
+#
+#     def evaluatePick(userPick):
+#         return
+#
+#     @discord.ui.button(label="🪨", style=discord.ButtonStyle.grey)
+#     async def menu1(self, button: discord.ui.Button, interaction: discord.Interaction):
+        
+
+# @bot.tree.command(name="rps", description="play rock paper scissors against the bot!")
+# async def rps(interaction: discord.Interaction):
+#     botPick = random.choice([1,2,3])
+#     await interaction.response.send_message("Take your pick! I've already picked mine")
 
 # @bot.tree.command(name="speak", description="speak")
 # async def speak(interaction: discord.Interaction, message: str):
