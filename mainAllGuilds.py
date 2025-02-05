@@ -26,6 +26,20 @@ async def on_ready():
     except Exception as e:
         print(f"Failed to sync commands: {e}")
 
+@bot.tree.command(name="brailynmom", description="add a tally to the number of times brailyn's mother has been fucked")
+@app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
+@app_commands.user_install()
+async def brialynmom(interaction: discord.Integration):
+    """Adds one to the number of times we've fucked brailyns mom"""
+    
+    counter = 0
+    with open("brailynmomcounter.txt", 'wb') as file:
+        counter = file.readline()
+        counter+=1
+    with open("brailynmomcounter.txt", 'w') as file:
+        file.write(counter)
+    await interaction.response.send_message(f"You fucked brailyn's mother! \nTotal number of times she's been fucked = {counter}")
+
 # Define the slash command, localized to the specific server
 @bot.tree.command(name="fire", description="Send a FIRE GIF with your custom message")
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
