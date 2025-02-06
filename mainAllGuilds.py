@@ -21,7 +21,7 @@ async def on_ready():
     try:
         game = discord.Game("globally")
         await bot.change_presence(status=discord.Status.idle, activity=game)
-        synced = await bot.tree.sync()  # Sync commands only for the specified server
+        synced = await bot.tree.sync()  # Sync commands globally
         print(f"Synced {len(synced)} commands globally.")
     except Exception as e:
         print(f"Failed to sync commands: {e}")
@@ -55,15 +55,14 @@ async def brialynmom(interaction: discord.Integration):
         json.dump(j, file, indent=4)
         file.truncate()
         
-    await interaction.response.send_message(f"You did brailyn's mother!"
-                                            f"\nTotal = **{counter}**"
-                                            f"\nYou = **{j['leaderboard'][str(userid)]}**")
+    await interaction.response.send_message(f"You did brailyn's mother!\nTotal = **{counter}**\nYou = **{j['leaderboard'][str(userid)]}**")
 
 # Define the slash command, localized to the specific server
 @bot.tree.command(name="fire", description="Send a FIRE GIF with your custom message")
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 @app_commands.user_install()
 async def fire(interaction: discord.Interaction, message: str):
+    
     """Slash command to send a FIRE gif with a custom message."""
     
     # 1) CREATE GIF
