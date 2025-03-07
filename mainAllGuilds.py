@@ -26,10 +26,20 @@ async def on_ready():
     except Exception as e:
         print(f"Failed to sync commands: {e}")
 
+@bot.event
+async def on_message(message):
+    # Ignore messages sent by the bot itself
+    if message.author == bot.user:
+        return
+
+    # Print the message content to the terminal
+    print(f'Message from {message.author.id}: {message.content}')
+
+
 @bot.tree.command(name="brailynmom", description="add a tally to the number of times brailyn's mother has been fucked")
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 @app_commands.user_install()
-async def brialynmom(interaction: discord.Integration):
+async def brailynmom(interaction: discord.Integration):
     """Adds one to the number of times we've fucked brailyns mom"""
     
     userid = interaction.user.id
@@ -101,6 +111,12 @@ async def fire(interaction: discord.Interaction, message: str):
     except Exception as e:
         await interaction.response.send_message("Something went wrong!", ephemeral=True)
         log(f"Error sending fire gif: {e}")
+
+@bot.tree.command(name="dice", description="roll a dice with 'n' sides")
+@app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
+@app_commands.user_install()
+async def fire(interaction: discord.Interaction, n: str):
+    await interaction.response.send_message(f"Rolling a d{n}! Result is: {random.randint(1,n)}")
 
 @bot.tree.command(name="send_car", description="Get an image of a cute random car")
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
@@ -186,6 +202,21 @@ async def potato_pic(interaction: discord.Interaction):
             else:
                 await interaction.response.send_message("Couldn't fetch a potato image right now, sorry!")
                 log("Couldn't send a random potato picture")
+
+""" WORK IN PROGRESS. it should return an embedded message of the leaderboard"""
+# @bot.tree.command(name="momleaderboard", description="view leaderboarf")
+# @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
+# @app_commands.user_install()
+# async def momleaderboard(interaction: discord.Integration):
+#     output = ""
+    
+#     with open("brailynmom.json", "r") as file:
+#         j = json.load(file)
+    
+#     for i in j["leaderboard"]:
+#         output+=(str(bot.get_user(int(i)))+" "+str(j["leaderboard"][i]))
+    
+#     await interaction.response.send_message(output)
 
 """ BELOW IS WORK IN PROGRESS """
 # @bot.tree.command(name="jarvis", description="send that one jarvis meme with a custom msg, max 80 characters")
