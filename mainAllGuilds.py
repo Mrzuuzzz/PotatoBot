@@ -112,10 +112,11 @@ async def fire(interaction: discord.Interaction, message: str):
 @bot.tree.command(name="dice", description="roll a dice with 'n' sides")
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 @app_commands.user_install()
-async def fire(interaction: discord.Interaction, n: str):
-    x = random.randint(1,n)
+async def dice(interaction: discord.Interaction, n: str):
+    x = random.randint(1,int(n))
     y = ""
-    if (x==n): y = "!!!"
+    if (int(n)<=1): await interaction.response.send_message(":person_standing: you should prob give a number greater than one...")
+    elif (x==n): y = "!!!"
     elif (x==1): y = "..."
     
     await interaction.response.send_message(f"Rolling a d{n}\nResult is: {x}{y}")
@@ -198,6 +199,32 @@ async def potato_pic(interaction: discord.Interaction):
             else:
                 await interaction.response.send_message("Couldn't fetch a potato image right now, sorry!")
                 log("Couldn't send a random potato picture")
+
+@bot.tree.command(name="leaderboard", description="view the leaderboard for that one command")
+@app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
+@app_commands.user_install()
+async def embed_message(interaction: discord.Interaction):
+    """Sends an embedded message with a title and description."""
+    me = interaction.user.id
+    with open('brailynmom.json', 'r') as file:
+        data = json.load(file)
+
+    leaderboard = data['leaderboard']
+    leaderboard_tuples = [(int(key), value) for key, value in leaderboard.items()]
+    sorted_leaderboard = sorted(leaderboard_tuples, key=lambda x: x[1], reverse=True)
+    positioned_leaderboard = [(f"{i+1}{'st' if i == 0 else 'nd' if i == 1 else 'rd' if i == 2 else 'th'}", score, user_id) 
+                            for i, (user_id, score) in enumerate(sorted_leaderboard)]
+
+    output = "**Total: "+str(data["counter"])+"**\n"
+    for i in positioned_leaderboard:
+        x = ""
+        if i[2] == me: x = " < YOU"
+        output+=f"\n{i[0]}, {i[1]}{x}"
+    
+    embed = discord.Embed(title="Leaderboard", description=output, colour=0xd6b67e)
+    await interaction.response.send_message(embed=embed)
+    
+    log(f"{me} sent leaderboard of brailynmom")
 
 """ WORK IN PROGRESS. it should return an embedded message of the leaderboard"""
 # @bot.tree.command(name="momleaderboard", description="view leaderboarf")
