@@ -32,9 +32,6 @@ async def on_message(message):
     if message.author == bot.user:
         return
 
-    # Print the message content to the terminal
-    print(f'Message from {message.author.id}: {message.content}')
-
 
 @bot.tree.command(name="brailynmom", description="add a tally to the number of times brailyn's mother has been fucked")
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
