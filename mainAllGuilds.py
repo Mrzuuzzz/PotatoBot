@@ -153,12 +153,6 @@ async def send_car(interaction: discord.Interaction):
 async def ping(interaction: discord.Interaction):
     await interaction.response.send_message(f"pong! 🏓, ping is: {bot.latency*1000:.2f} milliseconds!")
     
-@bot.tree.command(name="potato", description="potato")
-@app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
-@app_commands.user_install()
-async def potato(interaction: discord.Interaction):
-    await interaction.response.send_message("potato 🥔")
-    
 @bot.tree.command(name="potato_pic", description="get a random potato picture :o")
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 @app_commands.user_install()
