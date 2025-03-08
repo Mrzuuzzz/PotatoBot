@@ -116,7 +116,12 @@ async def fire(interaction: discord.Interaction, message: str):
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 @app_commands.user_install()
 async def fire(interaction: discord.Interaction, n: str):
-    await interaction.response.send_message(f"Rolling a d{n}! Result is: {random.randint(1,n)}")
+    x = random.randint(1,n)
+    y = ""
+    if (x==n): y = "!!!"
+    elif (x==1): y = "..."
+    
+    await interaction.response.send_message(f"Rolling a d{n}\nResult is: {x}{y}")
 
 @bot.tree.command(name="send_car", description="Get an image of a cute random car")
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)

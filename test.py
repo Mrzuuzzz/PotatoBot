@@ -1,11 +1,10 @@
-import discord, requests, aiohttp, io, random, asyncio, json
-from discord.ext import commands
-from discord import app_commands
-# from PIL import Image, ImageDraw, ImageFont
-from datetime import datetime
+import random
 
-with open("brailynmom.json", "r") as file:
-    j = json.load(file)
+n = 3
+
+x = random.randint(1,n)
+y = ""
+if (x==n): y = "!!!"
+elif (x==1): y = "..."
     
-    for i in j["leaderboard"]:
-        print(i+" "+str(j["leaderboard"][i]))
+print(f"Rolling a d{n}\nResult is: {x}{y}")
