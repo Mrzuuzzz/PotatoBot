@@ -278,8 +278,8 @@ async def embed_message(interaction: discord.Interaction):
 async def peter(interaction: discord.Interaction):
     x = random.randint(0,10)  # Hash userID and limit it to the range 0-10
     y = ""
-    if x == 1:  y = "tiny peter"
-    if x == 10: y = "beeg peter"
+    if x <= 1:  y = "tiny peter"
+    if x >= 9: y = "beeg peter"
     await interaction.response.send_message(f"8{'='*x}D {y}")
 
 
