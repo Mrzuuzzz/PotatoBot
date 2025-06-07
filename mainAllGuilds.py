@@ -1,14 +1,15 @@
-import discord, requests, aiohttp, io, random, asyncio, json
+import discord, requests, aiohttp, io, random, asyncio, json, os
 from discord.ext import commands
 from discord import app_commands
-
-# from PIL import Image, ImageDraw, ImageFont
 from datetime import datetime
+from dotenv import load_dotenv, dotenv_values 
+
 
 """--- SETTING UP ---"""
 intents = discord.Intents.default()
-bot = commands.Bot(command_prefix="!", intents=intents)
+bot = commands.Bot(command_prefix="@", intents=intents)
 sleepTimer = 3
+load_dotenv()
 
 
 def log(s: str):
@@ -74,7 +75,9 @@ async def brailynmom(interaction: discord.Integration):
 
 
 # Define the slash command, localized to the specific server
-@bot.tree.command(name="fire", description="Send a FIRE GIF with your custom message")
+@bot.tree.command(
+    name="fire", 
+    description="Send a FIRE GIF with your custom message")
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 @app_commands.user_install()
 async def fire(interaction: discord.Interaction, message: str):
@@ -122,7 +125,9 @@ async def fire(interaction: discord.Interaction, message: str):
         log(f"Error sending fire gif: {e}")
 
 
-@bot.tree.command(name="dice", description="roll a dice with 'n' sides")
+@bot.tree.command(
+    name="dice", 
+    description="roll a dice with 'n' sides")
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 @app_commands.user_install()
 async def dice(interaction: discord.Interaction, n: str):
@@ -140,7 +145,9 @@ async def dice(interaction: discord.Interaction, n: str):
     await interaction.response.send_message(f"Rolling a d{n}\nResult is: {x}{y}")
 
 
-@bot.tree.command(name="send_car", description="Get an image of a cute random car")
+@bot.tree.command(
+    name="send_car", 
+    description="Get an image of a cute random car")
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 @app_commands.user_install()
 async def send_car(interaction: discord.Interaction):
@@ -170,7 +177,8 @@ async def send_car(interaction: discord.Interaction):
 
 
 @bot.tree.command(
-    name="ping", description="returns the ping between you and the server"
+    name="ping", 
+    description="returns the ping between you and the server"
 )
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 @app_commands.user_install()
@@ -180,7 +188,9 @@ async def ping(interaction: discord.Interaction):
     )
 
 
-@bot.tree.command(name="potato_pic", description="get a random potato picture :o")
+@bot.tree.command(
+    name="potato_pic", 
+    description="get a random potato picture :o")
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 @app_commands.user_install()
 async def potato_pic(interaction: discord.Interaction):
@@ -237,7 +247,8 @@ async def potato_pic(interaction: discord.Interaction):
 
 
 @bot.tree.command(
-    name="leaderboard", description="view the leaderboard for that one command"
+    name="leaderboard", 
+    description="view the leaderboard for that one command"
 )
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 @app_commands.user_install()
@@ -272,7 +283,9 @@ async def embed_message(interaction: discord.Interaction):
     log(f"{me} sent leaderboard of brailynmom")
 
 
-@bot.tree.command(name="peter", description="tee hee")
+@bot.tree.command(
+    name="peter", 
+    description="tee hee")
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 @app_commands.user_install()
 async def peter(interaction: discord.Interaction):
@@ -281,59 +294,15 @@ async def peter(interaction: discord.Interaction):
     if x <= 1:  y = "tiny peter"
     if x >= 9: y = "beeg peter"
     await interaction.response.send_message(f"8{'='*x}D {y}")
+    
+@bot.tree.command(
+    name="server", 
+    description="free advertisment i guess")
+@app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
+@app_commands.user_install()
+async def peter(interaction: discord.Interaction):
+    await interaction.response.send_message("https://discord.gg/Zp7GqWxZXW")
 
-
-""" WORK IN PROGRESS. it should return an embedded message of the leaderboard"""
-# @bot.tree.command(name="momleaderboard", description="view leaderboarf")
-# @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
-# @app_commands.user_install()
-# async def momleaderboard(interaction: discord.Integration):
-#     output = ""
-
-#     with open("brailynmom.json", "r") as file:
-#         j = json.load(file)
-
-#     for i in j["leaderboard"]:
-#         output+=(str(bot.get_user(int(i)))+" "+str(j["leaderboard"][i]))
-
-#     await interaction.response.send_message(output)
-
-""" BELOW IS WORK IN PROGRESS """
-# @bot.tree.command(name="jarvis", description="send that one jarvis meme with a custom msg, max 80 characters")
-# async def send_gif(interaction: discord.Interaction, message: str):
-#     await interaction.response.send_message("oopsies, this command is under construction, sorgy")
-#     #1 find out if the user actually inputted less than 90 characters
-#
-#     #0 Find out how big it should be and how many lines
-#     minFontSize = 35
-#     maxFontSize = 55
-#
-#     #1 actually place the image
-#     img = Image.open('jarvis.png)')
-#     layer = ImageDraw.Draw(img)
-#     font = ImageFont.truetype()
-
-# class RockPaperScissors(discord.ui.View):
-#     def __init__(self):
-#         super().__init__()
-#         self.value = None
-#
-#     def evaluatePick(userPick):
-#         return
-#
-#     @discord.ui.button(label="🪨", style=discord.ButtonStyle.grey)
-#     async def menu1(self, button: discord.ui.Button, interaction: discord.Interaction):
-
-
-# @bot.tree.command(name="rps", description="play rock paper scissors against the bot!")
-# async def rps(interaction: discord.Interaction):
-#     botPick = random.choice([1,2,3])
-#     await interaction.response.send_message("Take your pick! I've already picked mine")
-
-# @bot.tree.command(name="speak", description="speak")
-# async def speak(interaction: discord.Interaction, message: str):
-#     """speaks"""
-#     await interaction.response.send_message(message)
 
 # run that mofo
-bot.run("ODU4NzUyMjgyMTExMjQ2MzU3.GZSfs_.S37TZnUH1hBXepVTJsdPaUz1tJfwPgPANXC50A")
+bot.run(os.getenv("THEKEY"))
