@@ -4,6 +4,7 @@ from discord import app_commands
 from datetime import datetime
 from dotenv import load_dotenv, dotenv_values 
 
+#hi jorge!
 
 """--- SETTING UP ---"""
 intents = discord.Intents.default()
