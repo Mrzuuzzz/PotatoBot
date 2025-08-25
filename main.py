@@ -304,6 +304,16 @@ async def peter(interaction: discord.Interaction):
 async def peter(interaction: discord.Interaction):
     await interaction.response.send_message("https://discord.gg/Zp7GqWxZXW")
 
+@bot.tree.command(
+    name="twin",
+    description='will tell us who is the better twin'
+)
+@app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
+@app_commands.user_install()
+async def twin(interaction: discord.Interaction):
+    x = random.randint(0, 1)
+    y = "joreg" if x == 0 else "aleyn"
+    await interaction.response.send_message(y)
 
 # run that mofo
 bot.run(os.getenv("THE_KEY"))
