@@ -315,7 +315,7 @@ async def twin(interaction: discord.Interaction):
 
 @bot.tree.command(
     name="stats",
-    description="creates a stats n-th-gon based on a series of inputs with a score (up to 100), example: a,30,b,60,c,90")
+    description="creates an n-th-gon based on a series of inputs with a score (up to 100) Example: a,30,b,60,c,90")
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 @app_commands.user_install()
 async def stats(interaction: discord.Interaction, n: str):
