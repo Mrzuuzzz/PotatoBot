@@ -319,9 +319,8 @@ async def twin(interaction: discord.Interaction):
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 @app_commands.user_install()
 async def stats(interaction: discord.Interaction, n: str):
-    rawList = n.split(n)
-
-    if len(rawList % 2 != 0):
+    rawList = n.split(",")
+    if len(rawList) % 2 != 0:
         await interaction.response.send_message(":potato: list of inputs must be pairs of values, in other words, list must have even length")
     try:
         param = []
@@ -329,7 +328,6 @@ async def stats(interaction: discord.Interaction, n: str):
             param+=[(str(rawList[2*i]), int(rawList[2*i+1]))]
     except ValueError:
         await interaction.response.send_message(":crying: one of your scores isn't an integer")
-
     color = (107, 0, 185)
 
     scale = 4 # needed for antialiasing
@@ -404,7 +402,7 @@ async def stats(interaction: discord.Interaction, n: str):
             await interaction.response.defer()
             await asyncio.sleep(sleepTimer)
             await interaction.followup.send(file=file)
-            log("img.png sent sucessfully")
+            log("stats image sent sucessfully")
     except Exception as e:
         await interaction.response.send_message("Something went wrong!", ephemeral=True)
         log(f"Error sending stats image: {e}")
