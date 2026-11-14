@@ -20,23 +20,29 @@ sleepTimer = 3
 load_dotenv()
 
 
-def log(s: str):
-    """prints a message to the terminal to 'log' it with a timestamp"""
-    time = datetime.now().strftime("%Y-%m-%d %H:%M:%S ")
-    print(time + s)
+def log(s: str, level: str = "INFO"):
+    """prints a message to the terminal with a timestamp and level (INFO, WARN, ERROR)"""
+    time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    print(f"{time} [{level}] {s}")
 
 
 @bot.event
 async def on_ready():
     """what does the bot do when i click run"""
-    print(f"Logged in as {bot.user}")
+    log(f"Logged in as {bot.user}")
     try:
         game = discord.Game("globally")
         await bot.change_presence(status=discord.Status.idle, activity=game)
         synced = await bot.tree.sync()  # Sync commands globally
-        print(f"Synced {len(synced)} commands globally.")
+        log(f"Synced {len(synced)} commands globally")
     except Exception as e:
-        print(f"Failed to sync commands: {e}")
+        log(f"Failed to sync commands: {e}", "ERROR")
+
+
+@bot.event
+async def on_app_command_completion(interaction: discord.Interaction, command):
+    """logs every successful slash command in one place"""
+    log(f"{interaction.user.id} ran /{command.name}")
 
 
 @bot.event
@@ -55,8 +61,6 @@ async def brailynmom(interaction: discord.Interaction):
     """Adds one to the number of times we've given a flower to brailyns mom"""
 
     userid = interaction.user.id
-
-    log(f"{userid} ran brailynmomcounter")
 
     with open("brailynmom.json", "r+") as file:
         j = json.load(file)
@@ -111,7 +115,7 @@ async def fire(interaction: discord.Interaction, message: str):
                 gifurl = (await r.json(content_type=None))["renderLocation"]
             async with session.get(gifurl) as r:
                 if r.status != 200:
-                    log(f"Failed to download the GIF. Status code: {r.status}")
+                    log(f"Failed to download the GIF. Status code: {r.status}", "WARN")
                     await interaction.followup.send("Couldn't make the GIF right now, sorry!")
                     return
                 gif_data = await r.read()
@@ -120,7 +124,7 @@ async def fire(interaction: discord.Interaction, message: str):
         log("fire.gif sent successfully")
     except Exception as e:
         await interaction.followup.send("Something went wrong!", ephemeral=True)
-        log(f"Error sending fire gif: {e}")
+        log(f"Error sending fire gif: {e}", "ERROR")
 
 
 @bot.tree.command(
@@ -165,12 +169,12 @@ async def send_car(interaction: discord.Interaction):
                 await interaction.response.defer()
                 await asyncio.sleep(sleepTimer)
                 await interaction.followup.send(file=file)
-                log("Sent a random cat picture!")
+                log("Sent a random cat picture")
             else:
                 await interaction.response.send_message(
                     "Couldn't fetch a cat image right now, sorry!"
                 )
-                log("Couldn't send a random cat picture")
+                log("Couldn't fetch a random cat picture", "WARN")
 
 
 @bot.tree.command(
@@ -234,12 +238,12 @@ async def potato_pic(interaction: discord.Interaction):
                     io.BytesIO(image_data), filename=f"potato.{extension}"
                 )
                 await interaction.response.send_message(file=file)
-                log("Sent a random potato picture!")
+                log("Sent a random potato picture")
             else:
                 await interaction.response.send_message(
                     "Couldn't fetch a potato image right now, sorry!"
                 )
-                log("Couldn't send a random potato picture")
+                log("Couldn't fetch a random potato picture", "WARN")
 
 
 @bot.tree.command(
@@ -274,8 +278,6 @@ async def embed_message(interaction: discord.Interaction):
 
     embed = discord.Embed(title="Leaderboard", description=output, colour=0xD6B67E)
     await interaction.response.send_message(embed=embed)
-
-    log(f"{me} sent leaderboard of brailynmom")
 
 
 @bot.tree.command(
