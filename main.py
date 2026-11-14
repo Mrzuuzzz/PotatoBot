@@ -1,12 +1,17 @@
-import discord, requests, aiohttp, io, random, asyncio, json, os, math
-from PIL import Image, ImageDraw, ImageFont
-from discord.ext import commands
-from discord import app_commands
-from datetime import datetime
-from typing import List
-from dotenv import load_dotenv, dotenv_values 
+import asyncio
+import io
+import json
+import math
+import os
+import random
 
-#hi jorge!
+import aiohttp
+import discord
+from datetime import datetime
+from discord import app_commands
+from discord.ext import commands
+from dotenv import load_dotenv
+from PIL import Image, ImageDraw, ImageFont
 
 """--- SETTING UP ---"""
 intents = discord.Intents.default()
@@ -46,8 +51,8 @@ async def on_message(message):
     description="add a tally to the number of times brailyn's mother")
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 @app_commands.user_install()
-async def brailynmom(interaction: discord.Integration):
-    """Adds one to the number of times we've fucked brailyns mom"""
+async def brailynmom(interaction: discord.Interaction):
+    """Adds one to the number of times we've given a flower to brailyns mom"""
 
     userid = interaction.user.id
 
@@ -72,7 +77,7 @@ async def brailynmom(interaction: discord.Integration):
         file.truncate()
 
     await interaction.response.send_message(
-        f"You did brailyn's mother!\nTotal = **{counter}**\nYou = **{j['leaderboard'][str(userid)]}**"
+        f"You gave brailyn's mother a flower!\nTotal = **{counter}**\nYou = **{j['leaderboard'][str(userid)]}**"
     )
 
 
@@ -99,31 +104,22 @@ async def fire(interaction: discord.Interaction, message: str):
         "BackgroundColor_color": "#FFFFFF",
     }
 
-    gifurl = requests.post("https://cooltext.com/PostChange", data=payload).json()[
-        "renderLocation"
-    ]
-
-    # 2) SAVE GIF (not to storage hopefully)
-    output = "fire.gif"
-    r = requests.get(gifurl, verify=False)
-    if r.status_code == 200:
-        with open(output, "wb") as file:
-            file.write(r.content)
-        log("Saved fire.gif")
-    else:
-        log(f"Failed to download the GIF. Status code: {r.status_code}")
-
-    # 3) SEND GIF
+    await interaction.response.defer()
     try:
-        # Send the response with the GIF and the message
-        with open("fire.gif", "rb") as gif_file:
-            file = discord.File(gif_file, filename="fire.gif")
-            await interaction.response.defer()
-            await asyncio.sleep(sleepTimer)
-            await interaction.followup.send(file=file)
-            log("fire.gif sent sucessfully")
+        async with aiohttp.ClientSession() as session:
+            async with session.post("https://cooltext.com/PostChange", data=payload) as r:
+                gifurl = (await r.json(content_type=None))["renderLocation"]
+            async with session.get(gifurl) as r:
+                if r.status != 200:
+                    log(f"Failed to download the GIF. Status code: {r.status}")
+                    await interaction.followup.send("Couldn't make the GIF right now, sorry!")
+                    return
+                gif_data = await r.read()
+        file = discord.File(io.BytesIO(gif_data), filename="fire.gif")
+        await interaction.followup.send(file=file)
+        log("fire.gif sent successfully")
     except Exception as e:
-        await interaction.response.send_message("Something went wrong!", ephemeral=True)
+        await interaction.followup.send("Something went wrong!", ephemeral=True)
         log(f"Error sending fire gif: {e}")
 
 
@@ -134,17 +130,16 @@ async def fire(interaction: discord.Interaction, message: str):
 @app_commands.user_install()
 async def dice(interaction: discord.Interaction, n: str):
     try:
-        int(n)
-        x = random.randint(1, int(n))
-        y = ""
-        if int(n) <= 1:
-            await interaction.response.send_message(":potato: you should prob give a number GREATER than one...")
-        elif x == n: y = "!!!"
-        elif x == 1: y = "..."
-        await interaction.response.send_message(f"Rolling a d{n}\nResult is: {x}{y}")
+        sides = int(n)
     except ValueError:
         await interaction.response.send_message(":potato: please make sure you give an INTEGER")
-    
+        return
+    if sides <= 1:
+        await interaction.response.send_message(":potato: you should prob give a number GREATER than one...")
+        return
+    x = random.randint(1, sides)
+    y = "!!!" if x == sides else "..." if x == 1 else ""
+    await interaction.response.send_message(f"Rolling a d{sides}\nResult is: {x}{y}")
 
 
 @bot.tree.command(
@@ -203,7 +198,7 @@ async def potato_pic(interaction: discord.Interaction):
         "https://www.shutterstock.com/image-photo/washed-potatoes-organic-potato-isolated-260nw-2452909787.jpg",
         "https://i5.walmartimages.com/asr/900b3713-5ba3-4f40-bd73-f95a04b0ae13.76d4af6527a3e0f5f463c7e0877f7cfd.jpeg?odnHeight=768&odnWidth=768&odnBg=FFFFFF",
         "https://www.heddensofwoodtown.co.uk/wp-content/uploads/2020/02/wilja_potatoes_opt.jpg",
-        "https://plus.unsplash.com/premium_photo-1724256031338-b5bfba816cfd?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cG90YXRvfGVufDB8fDB8fHww"
+        "https://plus.unsplash.com/premium_photo-1724256031338-b5bfba816cfd?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cG90YXRvfGVufDB8fDB8fHww",
         "https://www.keystonepotato.com/wp-content/uploads/2022/04/banner-potato-image.png",
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTu3hixOCV2Ev7g5oonOdjEdC3h_YsNUuEAWaRrGOHOPtrqjRcCwiJEiY0sV26kfVaKblE&usqp=CAU",
         "https://meridianfarmmarket.ca/cdn/shop/products/little-potato-company-potatoes-baby-boomer_1.jpg?v=1655861933",
@@ -322,12 +317,14 @@ async def stats(interaction: discord.Interaction, n: str):
     rawList = n.split(",")
     if len(rawList) % 2 != 0:
         await interaction.response.send_message(":potato: list of inputs must be pairs of values, in other words, list must have even length")
+        return
     try:
         param = []
         for i in range(0, int(len(rawList)/2)):
             param+=[(str(rawList[2*i]), int(rawList[2*i+1]))]
     except ValueError:
         await interaction.response.send_message(":crying: one of your scores isn't an integer")
+        return
     color = (107, 0, 185)
 
     scale = 4 # needed for antialiasing
@@ -393,20 +390,15 @@ async def stats(interaction: discord.Interaction, n: str):
     widthNew, heightNew = int(width/4), int(height/4)
     img = img.resize((widthNew, heightNew), resample=Image.Resampling.LANCZOS)
 
-    # save
-    img.save("img.png")
-    
-    try:
-        with open("img.png", "rb") as png_file:
-            file = discord.File(png_file, filename="img.png")
-            await interaction.response.defer()
-            await asyncio.sleep(sleepTimer)
-            await interaction.followup.send(file=file)
-            log("stats image sent sucessfully")
-    except Exception as e:
-        await interaction.response.send_message("Something went wrong!", ephemeral=True)
-        log(f"Error sending stats image: {e}")
+    # send straight from memory
+    buffer = io.BytesIO()
+    img.save(buffer, format="PNG")
+    buffer.seek(0)
+
+    await interaction.response.send_message(file=discord.File(buffer, filename="img.png"))
+    log("stats image sent successfully")
 
 
 # run that mofo
-bot.run(os.getenv("THE_KEY"))
+if __name__ == "__main__":
+    bot.run(os.getenv("THE_KEY"))

@@ -1,5 +1,9 @@
-# Ignore brailynmom.json file
-fire.gif
+# Ignore secrets, generated files, and environments
 brailynmom.json
+fire.gif
+img.png
 .env
-.venv
+.venv/
+venv/
+__pycache__/
+*.pyc
