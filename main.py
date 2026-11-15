@@ -57,6 +57,7 @@ async def on_message(message):
     description="add a tally to the number of times brailyn's mother")
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 @app_commands.user_install()
+@app_commands.guild_install()
 async def brailynmom(interaction: discord.Interaction):
     """Adds one to the number of times we've given a flower to brailyns mom"""
 
@@ -91,6 +92,7 @@ async def brailynmom(interaction: discord.Interaction):
     description="Send a FIRE GIF with your custom message")
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 @app_commands.user_install()
+@app_commands.guild_install()
 async def fire(interaction: discord.Interaction, message: str):
     """Slash command to send a FIRE gif with a custom message."""
 
@@ -132,6 +134,7 @@ async def fire(interaction: discord.Interaction, message: str):
     description="roll a dice with 'n' sides")
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 @app_commands.user_install()
+@app_commands.guild_install()
 async def dice(interaction: discord.Interaction, n: str):
     try:
         sides = int(n)
@@ -151,6 +154,7 @@ async def dice(interaction: discord.Interaction, n: str):
     description="Get an image of a cute random car")
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 @app_commands.user_install()
+@app_commands.guild_install()
 async def send_car(interaction: discord.Interaction):
     """Sends a random cat picture from https://genrandom.com/cats/"""
     url = "https://genrandom.com/api/cat"
@@ -182,6 +186,7 @@ async def send_car(interaction: discord.Interaction):
     description="returns the ping between you and the server (chromebook lol)")
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 @app_commands.user_install()
+@app_commands.guild_install()
 async def ping(interaction: discord.Interaction):
     await interaction.response.send_message(
         f"pong! 🏓, ping is: {bot.latency*1000:.2f} milliseconds!"
@@ -193,6 +198,7 @@ async def ping(interaction: discord.Interaction):
     description="get a random potato picture :o")
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 @app_commands.user_install()
+@app_commands.guild_install()
 async def potato_pic(interaction: discord.Interaction):
 
     listPotato = [  # a buttload of potato pictures
@@ -251,6 +257,7 @@ async def potato_pic(interaction: discord.Interaction):
     description="view the leaderboard for that one command")
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 @app_commands.user_install()
+@app_commands.guild_install()
 async def embed_message(interaction: discord.Interaction):
     """Sends an embedded message with a title and description."""
     me = interaction.user.id
@@ -285,6 +292,7 @@ async def embed_message(interaction: discord.Interaction):
     description="tee hee")
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 @app_commands.user_install()
+@app_commands.guild_install()
 async def peter(interaction: discord.Interaction):
     x = random.randint(0,10)  # Hash userID and limit it to the range 0-10
     y = ""
@@ -297,6 +305,7 @@ async def peter(interaction: discord.Interaction):
     description="free advertisment i guess")
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 @app_commands.user_install()
+@app_commands.guild_install()
 async def server(interaction: discord.Interaction):
     await interaction.response.send_message("https://discord.gg/Zp7GqWxZXW")
 
@@ -305,6 +314,7 @@ async def server(interaction: discord.Interaction):
     description='will tell us who is the better twin')
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 @app_commands.user_install()
+@app_commands.guild_install()
 async def twin(interaction: discord.Interaction):
     x = random.randint(0, 1)
     y = "joreg" if x == 0 else "aleyn"
@@ -315,6 +325,7 @@ async def twin(interaction: discord.Interaction):
     description="creates an n-th-gon based on a series of inputs with a score (up to 100) Example: a,30,b,60,c,90")
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 @app_commands.user_install()
+@app_commands.guild_install()
 async def stats(interaction: discord.Interaction, n: str):
     rawList = n.split(",")
     if len(rawList) % 2 != 0:
