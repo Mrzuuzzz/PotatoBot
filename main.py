@@ -81,7 +81,7 @@ async def brailynmom(interaction: discord.Interaction):
         json.dump(j, file, indent=4)
         file.truncate()
 
-    int x = random.randint(1,4)
+    x = random.randint(1,4)
     
     match x
         case 1: x = "gave brailyn's mother a flower"
