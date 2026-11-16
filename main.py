@@ -83,7 +83,7 @@ async def brailynmom(interaction: discord.Interaction):
 
     x = random.randint(1,4)
     
-    match x
+    match x:
         case 1: x = "gave brailyn's mother a flower"
         case 2: x = "took out brailyn's mother out to a wonderful dinner"
         case 3: x = "gave brailyn's mother a box of chocolates"
