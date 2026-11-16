@@ -54,7 +54,7 @@ async def on_message(message):
 
 @bot.tree.command(
     name="brailynmom",
-    description="add a tally to the number of times brailyn's mother")
+    description="add a tally to the number of times you've treated brailyn's mother")
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 @app_commands.user_install()
 @app_commands.guild_install()
@@ -81,8 +81,16 @@ async def brailynmom(interaction: discord.Interaction):
         json.dump(j, file, indent=4)
         file.truncate()
 
+    int x = random.randint(1,4)
+    
+    match x
+        case 1: x = "gave brailyn's mother a flower"
+        case 2: x = "took out brailyn's mother out to a wonderful dinner"
+        case 3: x = "gave brailyn's mother a box of chocolates"
+        case 4: x = "did the chores for brailyn's mom"
+        
     await interaction.response.send_message(
-        f"You gave brailyn's mother a flower!\nTotal = **{counter}**\nYou = **{j['leaderboard'][str(userid)]}**"
+        f"You {x}!\nTotal = **{counter}**\nYou = **{j['leaderboard'][str(userid)]}**"
     )
 
 
