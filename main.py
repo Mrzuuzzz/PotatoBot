@@ -335,7 +335,7 @@ async def twin(interaction: discord.Interaction):
 @app_commands.user_install()
 @app_commands.guild_install()
 async def stats(interaction: discord.Interaction, n: str):
-    rawList = n.strip().removeprefix("(").removesuffix(")").split(",")
+    raw_list = list(map(str.strip, n.strip(" ()[]").split(",")))
     if len(rawList) % 2 != 0:
         await interaction.response.send_message(":potato: list of inputs must be pairs of values, in other words, list must have even length")
         return
