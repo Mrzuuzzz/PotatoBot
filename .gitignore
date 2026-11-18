@@ -1,5 +1,5 @@
 # Ignore secrets, generated files, and environments
-brailynmom.json
+config.json
 fire.gif
 img.png
 .env

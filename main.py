@@ -63,7 +63,7 @@ async def brailynmom(interaction: discord.Interaction):
 
     userid = interaction.user.id
 
-    with open("brailynmom.json", "r+") as file:
+    with open("config.json", "r+") as file:
         j = json.load(file)
 
         # adds one more to tally
@@ -269,7 +269,7 @@ async def potato_pic(interaction: discord.Interaction):
 async def embed_message(interaction: discord.Interaction):
     """Sends an embedded message with a title and description."""
     me = interaction.user.id
-    with open("brailynmom.json", "r") as file:
+    with open("config.json", "r") as file:
         data = json.load(file)
 
     leaderboard = data["leaderboard"]
@@ -322,10 +322,12 @@ async def server(interaction: discord.Interaction):
     description='will tell us who is the better twin')
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 @app_commands.user_install()
-@app_commands.guild_install()
 async def twin(interaction: discord.Interaction):
-    x = random.randint(0, 1)
-    y = "joreg" if x == 0 else "aleyn"
+    y = ""
+    with open("config.json", "r") as file:
+        x = random.randint(0, 1)
+        j = json.load(file)
+        y = j["people"][x]
     await interaction.response.send_message(y)
 
 @bot.tree.command(
@@ -336,13 +338,13 @@ async def twin(interaction: discord.Interaction):
 @app_commands.guild_install()
 async def stats(interaction: discord.Interaction, n: str):
     raw_list = list(map(str.strip, n.strip(" ()[]").split(",")))
-    if len(rawList) % 2 != 0:
+    if len(raw_list) % 2 != 0:
         await interaction.response.send_message(":potato: list of inputs must be pairs of values, in other words, list must have even length")
         return
     try:
         param = []
-        for i in range(0, int(len(rawList)/2)):
-            param+=[(str(rawList[2*i]), int(rawList[2*i+1]))]
+        for i in range(0, int(len(raw_list)/2)):
+            param+=[(str(raw_list[2*i]), int(raw_list[2*i+1]))]
     except ValueError:
         await interaction.response.send_message(":crying: one of your scores isn't an integer")
         return
